@@ -1,0 +1,7 @@
+. /etc/amnesia/environment
+export TAILS_WIKI_SUPPORTED_LANGUAGES
+if [ -e /home/amnesia/.firstrun ] ; then
+  gnome-terminal -e "/bin/bash -c /home/amnesia/firstrun.sh;bash"
+  rm /home/amnesia/firstrun.sh /home/amnesia/.firstrun 2>/dev/null
+fi
+

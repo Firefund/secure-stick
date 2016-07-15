@@ -1,0 +1,22 @@
+#!/bin/bash -x
+
+export BALLS="black"
+echo $BALLS
+OLDPP="bonghits"
+PP1="x"
+PP2="y"
+CRYPTPART=$(lsblk -i | grep -B1 TailsData | head -n1 | awk '{print $1}' | sed 's/^`-//')
+
+if [ -e /home/amnesia/.firstrun ] ; then
+  while [[ $PP1 != $PP2 ]] ; do
+    echo -e "Enter new passphrase for $CRYPTPART\n"
+    read -s PP1
+    echo -e "Verify passphrase:\n"
+    read -s PP2
+    if ! [ $PP1 == $PP2 ] ; then
+      echo -e "Passphrases do not match, please try again!"
+    fi
+  done
+  printf '%s\n' "$OLDPP" "$PP1" "$PP1" | sudo cryptsetup luksChangeKey /dev/$CRYPTPART
+fi
+exit 0
